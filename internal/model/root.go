@@ -173,6 +173,7 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 			}
 
 			var buf bytes.Buffer
+
 			enc := yaml.NewEncoder(&buf, yaml.IndentSequence(true))
 
 			err = enc.Encode(resource)

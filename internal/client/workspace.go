@@ -38,6 +38,7 @@ func (c *Client) UpdateWorkspace(ctx context.Context, content []byte) error {
 
 func (c *Client) ListWorkspaces(ctx context.Context) ([]any, error) {
 	savedWks := c.Workspace()
+
 	c.SetWorkspace("") // Can't list workspaces with a workspace set
 	defer c.SetWorkspace(savedWks)
 
