@@ -1,0 +1,159 @@
+# https://taskfile.dev
+
+version: '3'
+
+includes: {}
+
+vars: {}
+
+env: {}
+
+tasks:
+  up: &up
+    dir: docker-compose
+    preconditions:
+      - test -f docker-compose.yml
+    desc: Run docker-compose up
+    cmds:
+      - docker-compose up -d
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:latest
+      KONG_DATABASE: postgres
+
+  up:3.10:
+    desc: Run docker-compose up with kong 3.10
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.10
+      KONG_DATABASE: postgres
+
+  up:3.9:
+    desc: Run docker-compose up with kong 3.9
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.9
+      KONG_DATABASE: postgres
+
+  up:3.8:
+    desc: Run docker-compose up with kong 3.8
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.8
+      KONG_DATABASE: postgres
+
+  up:3.7:
+    desc: Run docker-compose up with kong 3.7
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.7
+      KONG_DATABASE: postgres
+
+  up:3.6:
+    desc: Run docker-compose up with kong 3.6
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.6
+      KONG_DATABASE: postgres
+
+  up:3.5:
+    desc: Run docker-compose up with kong 3.5
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.5
+      KONG_DATABASE: postgres
+
+  up:3.4:
+    desc: Run docker-compose up with kong 3.4
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.4
+      KONG_DATABASE: postgres
+
+  up:3.3:
+    desc: Run docker-compose up with kong 3.3
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.3
+      KONG_DATABASE: postgres
+
+  up:3.2:
+    desc: Run docker-compose up with kong 3.2
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.2
+      KONG_DATABASE: postgres
+
+  up:3.1:
+    desc: Run docker-compose up with kong 3.1
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.1
+      KONG_DATABASE: postgres
+
+  up:3.0:
+    desc: Run docker-compose up with kong 3.0
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.0
+      KONG_DATABASE: postgres
+
+  down:
+    env:
+      COMPOSE_PROFILES: database
+    dir: docker-compose
+    preconditions:
+      - test -f docker-compose.yml
+    desc: Cleanup docker-compose
+    cmds:
+      - docker-compose kill
+      - docker-compose rm -f
+      - docker volume rm docker-compose_kong_prefix_vol docker-compose_kong_tmp_vol docker-compose_kong_data
+
+  run:
+    desc: Compile and run kongvisor
+    cmds:
+      - go run *.go {{.CLI_ARGS}}
+
+  default:
+    desc: list all tasks
+    cmds:
+      - task --list-all
+    silent: true
+
+  lint:
+    cmds:
+      - golangci-lint run
+
+  all-tests:
+    deps:
+      - lint
+      - test
+      - test-release
+
+  test:
+    env:
+      CGO_ENABLED: 1
+    cmds:
+      - go test -cover -v -race $(go list ./...)
+
+  build:
+    cmds:
+      - goreleaser build --skip=validate --clean --snapshot
+
+  test-release:
+    cmds:
+      - goreleaser release --skip=validate --skip=publish --clean --snapshot
+
+  release:
+    vars:
+      # Disable shallow cloning so that goreleaser can diff between tags to
+      # generate a changelog.
+      GIT_DEPTH: 0
+    cmds:
+      - goreleaser release --clean
+
+  coverage:
+    cmds:
+      - go test -v -cover -coverprofile=c.out ./...
+      - go tool cover -func=c.out
+      - rm c.out

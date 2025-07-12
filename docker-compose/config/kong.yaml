@@ -1,0 +1,55 @@
+# a very minimal declarative config file
+_format_version: "3.0"
+_transform: true
+consumers:
+  - username: user1
+plugins:
+  - name: request-termination
+    tags:
+      - tag3
+      - tag4
+  - name: cors
+services:
+  - name: foo
+    path: /foo
+    enabled: true
+    host: foo-server.dev
+    port: 80
+    protocol: http
+    plugins:
+      - name: rate-limiting
+        config:
+          second: 60
+    routes:
+      - paths:
+          - /foo1
+        name: firstFoo
+        plugins:
+          - enabled: false
+            name: cors
+            tags:
+              - tag5
+      - paths:
+          - /foo2
+        name: secondFoo
+        plugins:
+          - enabled: false
+            name: cors
+          - enabled: true
+            name: request-termination
+  - name: bar
+    path: /bar
+    enabled: false
+    host: bar-server.dev
+    port: 443
+    protocol: https
+    routes:
+      - paths:
+          - /bar
+        name: bar
+        plugins:
+          - enabled: false
+            name: cors
+    plugins:
+      - enabled: true
+        name: request-termination

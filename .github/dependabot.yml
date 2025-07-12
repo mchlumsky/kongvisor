@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    allow:
+      # Allow both direct and indirect updates for all packages
+      - dependency-type: "all"
+    groups:
+      version-updates:
+        applies-to: version-updates
+        update-types:
+        - "minor"
+        - "patch"
+      security-updates:
+        applies-to: security-updates
+        update-types:
+        - "patch"
+        - "minor"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

@@ -1,0 +1,61 @@
+version: 2
+project_name: kongvisor
+before:
+  hooks: []
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+archives:
+  - name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs'
+      - '^test'
+      - '^chore'
+      - '^style'
+      - '^ci'
+      - '^Merge pull request'
+  groups:
+    - title: 'New Features'
+      regexp: "^.*feat[(\\w)]*:+.*$"
+      order: 0
+    - title: 'Bug fixes'
+      regexp: "^.*fix[(\\w)]*:+.*$"
+      order: 10
+    - title: Other work
+      order: 999
+release:
+  github:
+    owner: mchlumsky
+    name: kongvisor
+nfpms:
+  - file_name_template: '{{ .ConventionalFileName }}'
+    id: packages
+    homepage:  https://github.com/mchlumsky/kongvisor
+    description: TUI for Kong Gateway Admin API
+    maintainer: Martin Chlumsky <martin.chlumsky@gmail.com>
+    license: MIT
+    formats:
+      - deb
+      - rpm
+# publishers:
+#   - name: fury.io
+#     ids:
+#       - packages
+#     env:
+#       - FURY_TOKEN={{ .Env.FURY_TOKEN }}
+#     cmd: ./scripts/fury-upload.sh {{ .ArtifactName }}
