@@ -1,3 +1,5 @@
+<img src="assets/kongvisor.png" alt="kongvisor">
+
 # kongvisor
 
 kongvisor is a TUI for Kong Gateway Admin API.
