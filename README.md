@@ -1,6 +1,6 @@
-<img src="assets/kongvisor.png" alt="kongvisor">
-
 # KongVisor
+
+<img src="assets/kongvisor.png" alt="kongvisor">
 
 [![Release](https://img.shields.io/github/release/mchlumsky/kongvisor.svg)](https://github.com/mchlumsky/kongvisor/releases/latest)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE)
