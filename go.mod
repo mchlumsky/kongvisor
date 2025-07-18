@@ -24,7 +24,7 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/imdario/mergo v1.0.2 // indirect
+	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/kong/semver/v4 v4.0.1 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -54,5 +54,3 @@ require (
 	golang.org/x/text v0.27.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.16
