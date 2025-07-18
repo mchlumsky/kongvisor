@@ -3,7 +3,7 @@
 # KongVisor
 
 [![Release](https://img.shields.io/github/release/mchlumsky/kongvisor.svg)](https://github.com/mchlumsky/kongvisor/releases/latest)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE.md)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE)
 [![Build status](https://img.shields.io/github/actions/workflow/status/mchlumsky/kongvisor/build.yml?branch=main)](https://github.com/mchlumsky/kongvisor/actions?workflow=build)
 [![Powered By: GoReleaser](https://img.shields.io/badge/powered%20by-goreleaser-green.svg)](https://github.com/goreleaser)
 
@@ -12,6 +12,58 @@ KongVisor is a TUI for Kong Gateway Admin API.
 It supports managing Kong Gateway resources like Workspaces, Services, Routes, and Plugins in a terminal user interface.
 
 ## Installation
+
+### YUM/DNF repository (Fedora, CentOS, etc...)
+
+To enable, add the following file /etc/yum.repos.d/mchlumsky.repo:
+
+```
+[mchlumsky]
+name=mchlumsky repository (kongvisor, etc...)
+baseurl=https://yum.fury.io/mchlumsky/
+enabled=1
+gpgcheck=0
+```
+
+and
+
+```shell
+dnf install kongvisor
+# or
+yum install kongvisor
+```
+
+### APT/DEB repository (Debian, Ubuntu, etc...)
+
+To enable, add the following file /etc/apt/sources.list.d/mchlumsky.list:
+
+```
+deb [trusted=yes] https://apt.fury.io/mchlumsky/ /
+```
+
+and
+
+```shell
+apt update
+apt install kongvisor
+```
+
+### Zypper repository (OpenSUSE)
+
+To enable, run the following command:
+
+```shell
+zypper addrepo --no-gpgcheck https://yum.fury.io/mchlumsky/ mchlumsky
+zypper install kongvisor
+```
+
+### Binary Releases
+
+Download and install a prebuilt binary from [github releases](https://github.com/mchlumsky/kongvisor/releases)
+
+### From source
+
+Install from source:
 
 ```bash
 go install github.com/mchlumsky/kongvisor@latest
