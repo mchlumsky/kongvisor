@@ -2,6 +2,8 @@
 
 # KongVisor
 
+[![Release](https://img.shields.io/github/release/mchlumsky/kongvisor.svg)](https://github.com/mchlumsky/kongvisor/releases/latest)
+
 KongVisor is a TUI for Kong Gateway Admin API.
 
 It supports managing Kong Gateway resources like Workspaces, Services, Routes, and Plugins in a terminal user interface.
