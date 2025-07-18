@@ -3,6 +3,9 @@ name: release
 on:
   create:
 
+permissions:
+  contents: write
+
 jobs:
   goreleaser:
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
