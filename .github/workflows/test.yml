@@ -40,7 +40,7 @@ jobs:
       - name: Run tests
         run: go test -race -run TestIntegration -tags integration -coverprofile=coverage.txt ./...
         env:
-          TEST_KONG_VERSION=${{ matrix.kong_version }}
+          TEST_KONG_VERSION: ${{ matrix.kong_version }}
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
