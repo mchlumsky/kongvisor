@@ -16,3 +16,6 @@ jobs:
         env:
           KONG_DOCKER_TAG: kong/kong-gateway:3.10
           KONG_DATABASE: postgres
+
+      - name: Run tests
+        run: curl locahost:8001
