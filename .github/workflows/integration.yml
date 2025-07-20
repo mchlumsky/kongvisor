@@ -13,3 +13,6 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2
         with:
           compose-file: "./docker-compose/docker-compose.yml"
+        env:
+          KONG_DOCKER_TAG: kong/kong-gateway:3.10
+          KONG_DATABASE: postgres
