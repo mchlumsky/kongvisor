@@ -20,6 +20,7 @@ func TestIntegrationKongVersion(t *testing.T) {
 
 	kc, err := gc.GetKongClient()
 	assert.NoError(err, "Failed to create Kong client")
+	assert.NotNil(kc.Client, "Kong client should not be nil")
 
 	actualVersion, err := kc.KongVersion()
 	assert.NoError(err, "Failed to get Kong version")
