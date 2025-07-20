@@ -1,9 +1,12 @@
-name: test-integration
+name: tests
 
 on: [push, pull_request]
 
 jobs:
-  build:
+  test-integration:
+    strategy:
+      matrix:
+        kong_version: [3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10]
     runs-on: ubuntu-latest
 
     steps:
@@ -14,7 +17,7 @@ jobs:
         with:
           compose-file: "./docker-compose/docker-compose.yml"
         env:
-          KONG_DOCKER_TAG: kong/kong-gateway:3.10
+          KONG_DOCKER_TAG: kong/kong-gateway:${{ kong_version }}
           KONG_DATABASE: postgres
 
       - name: Run tests
