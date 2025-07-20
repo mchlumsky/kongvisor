@@ -46,4 +46,4 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          flags: integration,${{ matrix.kong_version }}
+          flags: integration
