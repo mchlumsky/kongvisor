@@ -17,7 +17,7 @@ jobs:
         with:
           compose-file: "./docker-compose/docker-compose.yml"
         env:
-          KONG_DOCKER_TAG: kong/kong-gateway:${{ kong_version }}
+          KONG_DOCKER_TAG: kong/kong-gateway:${{ matrix.kong_version }}
           KONG_DATABASE: postgres
 
       - name: Run tests
