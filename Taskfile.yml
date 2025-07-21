@@ -20,11 +20,25 @@ tasks:
       KONG_DOCKER_TAG: kong/kong-gateway:latest
       KONG_DATABASE: postgres
 
+  up:3.11:
+    desc: Run docker-compose up with kong 3.11
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.11
+      KONG_DATABASE: postgres
+
   up:3.10:
     desc: Run docker-compose up with kong 3.10
     <<: *up
     env:
       KONG_DOCKER_TAG: kong/kong-gateway:3.10
+      KONG_DATABASE: postgres
+
+  up-oss:3.9:
+    desc: Run docker-compose up with kong 3.9
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong:3.9
       KONG_DATABASE: postgres
 
   up:3.9:
@@ -34,11 +48,25 @@ tasks:
       KONG_DOCKER_TAG: kong/kong-gateway:3.9
       KONG_DATABASE: postgres
 
+  up-oss:3.8:
+    desc: Run docker-compose up with kong 3.8
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong:3.8
+      KONG_DATABASE: postgres
+
   up:3.8:
     desc: Run docker-compose up with kong 3.8
     <<: *up
     env:
       KONG_DOCKER_TAG: kong/kong-gateway:3.8
+      KONG_DATABASE: postgres
+
+  up-oss:3.7:
+    desc: Run docker-compose up with kong 3.7
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong:3.7
       KONG_DATABASE: postgres
 
   up:3.7:
@@ -48,11 +76,25 @@ tasks:
       KONG_DOCKER_TAG: kong/kong-gateway:3.7
       KONG_DATABASE: postgres
 
+  up-oss:3.6:
+    desc: Run docker-compose up with kong 3.6
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong:3.6
+      KONG_DATABASE: postgres
+
   up:3.6:
     desc: Run docker-compose up with kong 3.6
     <<: *up
     env:
       KONG_DOCKER_TAG: kong/kong-gateway:3.6
+      KONG_DATABASE: postgres
+
+  up-oss:3.5:
+    desc: Run docker-compose up with kong 3.5
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong:3.5
       KONG_DATABASE: postgres
 
   up:3.5:
@@ -62,11 +104,25 @@ tasks:
       KONG_DOCKER_TAG: kong/kong-gateway:3.5
       KONG_DATABASE: postgres
 
+  up-oss:3.4:
+    desc: Run docker-compose up with kong 3.4
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong:3.4
+      KONG_DATABASE: postgres
+
   up:3.4:
     desc: Run docker-compose up with kong 3.4
     <<: *up
     env:
       KONG_DOCKER_TAG: kong/kong-gateway:3.4
+      KONG_DATABASE: postgres
+
+  up-oss:3.3:
+    desc: Run docker-compose up with kong 3.3
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong:3.3
       KONG_DATABASE: postgres
 
   up:3.3:
@@ -76,12 +132,28 @@ tasks:
       KONG_DOCKER_TAG: kong/kong-gateway:3.3
       KONG_DATABASE: postgres
 
+  up-oss:3.2:
+    desc: Run docker-compose up with kong 3.2
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong:3.2
+      KONG_DATABASE: postgres
+
   up:3.2:
     desc: Run docker-compose up with kong 3.2
     <<: *up
     env:
       KONG_DOCKER_TAG: kong/kong-gateway:3.2
       KONG_DATABASE: postgres
+
+  # there's no image for OSS 3.1
+  # up-oss:3.1:
+  #   desc: Run docker-compose up with kong 3.1
+  #   <<: *up
+  #   env:
+  #     KONG_DOCKER_TAG: kong/kong:3.1
+  #     KONG_DATABASE: postgres
+  #
 
   up:3.1:
     desc: Run docker-compose up with kong 3.1
@@ -90,6 +162,14 @@ tasks:
       KONG_DOCKER_TAG: kong/kong-gateway:3.1
       KONG_DATABASE: postgres
 
+  # 3.0 tag points at 3.3.x so not tested
+  # up-oss:3.0:
+  #   desc: Run docker-compose up with kong 3.0
+  #   <<: *up
+  #   env:
+  #     KONG_DOCKER_TAG: kong/kong:3.0
+  #     KONG_DATABASE: postgres
+  #
   up:3.0:
     desc: Run docker-compose up with kong 3.0
     <<: *up
