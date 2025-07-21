@@ -60,7 +60,7 @@ jobs:
       - name: Run docker compose
         uses: hoverkraft-tech/compose-action@v2
         with:
-          compose-file: "./docker-compose/docker-compose.yml"
+          cwd: ${{ github.workspace }}/docker-compose
         env:
           KONG_DOCKER_TAG: kong/kong:${{ matrix.kong_version }}
           KONG_DATABASE: postgres
