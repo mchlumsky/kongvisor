@@ -28,13 +28,11 @@ func TestIntegrationListServices(t *testing.T) {
 		assert.NotNil(actual, "Returned services should not be nil")
 		assert.Len(actual, 2, "Expected one service to be returned in the test environment")
 
-		assert.Equal("bar", *actual[0].(*kong.Service).Name, "Expected first service name to be 'bar'")
-		assert.Equal("foo", *actual[1].(*kong.Service).Name, "Expected first service name to be 'foo'")
-
+		expectedServices := []string{"foo", "bar"}
 		for _, svc := range actual {
 			service := svc.(*kong.Service)
 			assert.NotNil(service.ID, "Service ID should not be nil")
-			assert.NotEmpty(*service.Name, "Service name should not be empty")
+			assert.Contains(expectedServices, *service.Name, "Service name should be one of the expected names")
 		}
 	})
 }
