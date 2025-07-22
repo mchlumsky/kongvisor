@@ -38,11 +38,11 @@ var (
 )
 
 type (
-	ListFn     func(context.Context) ([]any, error)
-	ToItemFn   func(any) list.Item
-	GetFn      func(context.Context, string) (interface{}, error)
-	DeleteFn   func(context.Context, string) error
-	UpdateFn   func(context.Context, []byte) error
+	ListFn   func(context.Context) ([]any, error)
+	ToItemFn func(any) list.Item
+	GetFn    func(context.Context, string) (interface{}, error)
+	DeleteFn func(context.Context, string) error
+	UpdateFn func(context.Context, []byte) error
 )
 
 type ItemsMsg struct {
