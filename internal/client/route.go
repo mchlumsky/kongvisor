@@ -7,8 +7,8 @@ import (
 	"github.com/kong/go-kong/kong"
 )
 
-func (c *Client) GetRoute(ctx context.Context, id string) (interface{}, error) {
-	route, err := c.Routes.Get(ctx, &id)
+func (c *Client) GetRoute(ctx context.Context, nameOrID string) (interface{}, error) {
+	route, err := c.Routes.Get(ctx, &nameOrID)
 	if err != nil {
 		return nil, err
 	}
