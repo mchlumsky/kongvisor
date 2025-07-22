@@ -36,8 +36,6 @@ func TestIntegrationListServices(t *testing.T) {
 		}
 	})
 
-	var serviceID string  // used in `Get Service by ID` test
-
 	t.Run("Get Service by name", func(t *testing.T) {
 		serviceName := "foo"
 		service, err := kc.GetService(context.Background(), serviceName)
@@ -45,7 +43,6 @@ func TestIntegrationListServices(t *testing.T) {
 		assert.NotNil(service, "Returned service should not be nil")
 
 		svc := service.(*kong.Service)
-		serviceID = *svc.ID  // used in `Get Service by ID` test
 
 		assert.Equal(serviceName, *svc.Name, "Expected to get the service with the specified name")
 		assert.Equal("/foo", *svc.Path, "Expected service path to be '/foo'")
@@ -56,11 +53,16 @@ func TestIntegrationListServices(t *testing.T) {
 	})
 
 	t.Run("Get Service by ID", func(t *testing.T) {
-		service, err := kc.GetService(context.Background(), serviceID)
-		assert.NoError(err, "Failed to get service by ID")
-		assert.NotNil(service, "Returned service should not be nil")
+	var serviceID string  // used in `Get Service by ID` test
+		svcByName, err := kc.GetService(context.Background(), "foo")
+		assert.NoError(err, "Failed to get service by name")
+		assert.NotNil(svcByName, "Returned service should not be nil")
 
-		svc := service.(*kong.Service)
+		svcByID, err := kc.GetService(context.Background(), *svcByName.(*kong.Service).ID)
+		assert.NoError(err, "Failed to get service by ID")
+		assert.NotNil(svcByID, "Returned service should not be nil")
+
+		svc := svcByID.(*kong.Service)
 
 		assert.Equal(serviceID, *svc.ID, "Expected to get the service with the specified ID")
 		assert.Equal("/foo", *svc.Path, "Expected service path to be '/foo'")
