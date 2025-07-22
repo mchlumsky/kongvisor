@@ -40,7 +40,6 @@ var (
 type (
 	ListFn     func(context.Context) ([]any, error)
 	ToItemFn   func(any) list.Item
-	ListItemFn func(context.Context) ([]list.Item, error)
 	GetFn      func(context.Context, string) (interface{}, error)
 	DeleteFn   func(context.Context, string) error
 	UpdateFn   func(context.Context, []byte) error
@@ -94,7 +93,6 @@ type RootScreenModel struct {
 	baseURL       string
 	kongVersion   string
 	edition       string
-	listItemFn    ListItemFn
 	listFn        ListFn
 	toItemFn      ToItemFn
 	getFn         GetFn
@@ -280,15 +278,6 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 		return m, func() tea.Msg {
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
-
-			if m.listFn == nil {
-				items, err := m.listItemFn(ctx)
-				if err != nil {
-					return err
-				}
-
-				return ItemsMsg{items, m.name}
-			}
 
 			kongItems, err := m.listFn(ctx)
 			if err != nil {
