@@ -35,4 +35,38 @@ func TestIntegrationListServices(t *testing.T) {
 			assert.Contains(expectedServices, *service.Name, "Service name should be one of the expected names")
 		}
 	})
+
+	var serviceID string  // used in `Get Service by ID` test
+
+	t.Run("Get Service by name", func(t *testing.T) {
+		serviceName := "foo"
+		service, err := kc.GetService(context.Background(), serviceName)
+		assert.NoError(err, "Failed to get service by name")
+		assert.NotNil(service, "Returned service should not be nil")
+
+		svc := service.(*kong.Service)
+		serviceID = *svc.ID  // used in `Get Service by ID` test
+
+		assert.Equal(serviceName, *svc.Name, "Expected to get the service with the specified name")
+		assert.Equal("/foo", *svc.Path, "Expected service path to be '/foo'")
+		assert.True(*svc.Enabled, "Expected service to be enabled")
+		assert.Equal("foo-server.dev", *svc.Host, "Expected service host to be 'foo-server.dev'")
+		assert.Equal(int(80), *svc.Port, "Expected service port to be 80")
+		assert.Equal("http", *svc.Protocol, "Expected service protocol to be 'http'")
+	})
+
+	t.Run("Get Service by ID", func(t *testing.T) {
+		service, err := kc.GetService(context.Background(), serviceID)
+		assert.NoError(err, "Failed to get service by ID")
+		assert.NotNil(service, "Returned service should not be nil")
+
+		svc := service.(*kong.Service)
+
+		assert.Equal(serviceID, *svc.ID, "Expected to get the service with the specified ID")
+		assert.Equal("/foo", *svc.Path, "Expected service path to be '/foo'")
+		assert.True(*svc.Enabled, "Expected service to be enabled")
+		assert.Equal("foo-server.dev", *svc.Host, "Expected service host to be 'foo-server.dev'")
+		assert.Equal(int(80), *svc.Port, "Expected service port to be 80")
+		assert.Equal("http", *svc.Protocol, "Expected service protocol to be 'http'")
+	})
 }
