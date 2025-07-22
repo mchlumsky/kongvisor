@@ -53,18 +53,18 @@ func TestIntegrationListServices(t *testing.T) {
 	})
 
 	t.Run("Get Service by ID", func(t *testing.T) {
-	var serviceID string  // used in `Get Service by ID` test
 		svcByName, err := kc.GetService(context.Background(), "foo")
 		assert.NoError(err, "Failed to get service by name")
 		assert.NotNil(svcByName, "Returned service should not be nil")
 
-		svcByID, err := kc.GetService(context.Background(), *svcByName.(*kong.Service).ID)
+		svcID := *svcByName.(*kong.Service).ID
+		svcByID, err := kc.GetService(context.Background(), svcID)
 		assert.NoError(err, "Failed to get service by ID")
 		assert.NotNil(svcByID, "Returned service should not be nil")
 
 		svc := svcByID.(*kong.Service)
 
-		assert.Equal(serviceID, *svc.ID, "Expected to get the service with the specified ID")
+		assert.Equal(svcID, *svc.ID, "Expected to get the service with the specified ID")
 		assert.Equal("/foo", *svc.Path, "Expected service path to be '/foo'")
 		assert.True(*svc.Enabled, "Expected service to be enabled")
 		assert.Equal("foo-server.dev", *svc.Host, "Expected service host to be 'foo-server.dev'")
