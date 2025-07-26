@@ -41,13 +41,8 @@ func (c *Client) ListPlugins(ctx context.Context) ([]any, error) {
 	return res, nil
 }
 
-func (c *Client) GetPlugin(ctx context.Context, usernameOrID string) (interface{}, error) {
-	plugin, err := c.Plugins.Get(ctx, &usernameOrID)
-	if err != nil {
-		return nil, err
-	}
-
-	return plugin, err
+func (c *Client) GetPlugin(ctx context.Context, usernameOrID string) (any, error) {
+	return c.Plugins.Get(ctx, &usernameOrID)
 }
 
 func (c *Client) DeletePlugin(ctx context.Context, id string) error {

@@ -7,13 +7,8 @@ import (
 	"github.com/kong/go-kong/kong"
 )
 
-func (c *Client) GetWorkspace(ctx context.Context, nameOrID string) (interface{}, error) {
-	workspace, err := c.Workspaces.Get(ctx, &nameOrID)
-	if err != nil {
-		return nil, err
-	}
-
-	return workspace, nil
+func (c *Client) GetWorkspace(ctx context.Context, nameOrID string) (any, error) {
+	return c.Workspaces.Get(ctx, &nameOrID)
 }
 
 func (c *Client) DeleteWorkspace(ctx context.Context, id string) error {
