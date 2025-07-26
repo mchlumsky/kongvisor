@@ -7,13 +7,8 @@ import (
 	"github.com/kong/go-kong/kong"
 )
 
-func (c *Client) GetService(ctx context.Context, nameOrID string) (interface{}, error) {
-	service, err := c.Services.Get(ctx, &nameOrID)
-	if err != nil {
-		return nil, err
-	}
-
-	return service, nil
+func (c *Client) GetService(ctx context.Context, nameOrID string) (any, error) {
+	return c.Services.Get(ctx, &nameOrID)
 }
 
 func (c *Client) DeleteService(ctx context.Context, nameOrID string) error {
