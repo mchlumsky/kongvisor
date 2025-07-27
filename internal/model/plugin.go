@@ -16,25 +16,25 @@ var (
 	_ list.Item = PluginItem{}
 )
 
-func (m *RootScreenModel) SwitchToPlugins() { //nolint:dupl
+func (m *RootScreenModel) SwitchToPlugins() {
 	m.name = "plugins"
 
 	m.listFn = func(ctx context.Context) ([]list.Item, error) {
 		var (
 			plugins []*kong.Plugin
 			err     error
-			c       = m.Client
+			client  = m.Client
 		)
 
 		switch {
-		case *c.FilterRoute != "":
-			plugins, err = c.Plugins.ListAllForRoute(ctx, c.FilterRoute)
-		case *c.FilterService != "":
-			plugins, err = c.Plugins.ListAllForService(ctx, c.FilterService)
+		case *client.FilterRoute != "":
+			plugins, err = client.Plugins.ListAllForRoute(ctx, client.FilterRoute)
+		case *client.FilterService != "":
+			plugins, err = client.Plugins.ListAllForService(ctx, client.FilterService)
 		default:
 			var ps []*kong.Plugin
 
-			ps, err = c.Plugins.ListAll(ctx)
+			ps, err = client.Plugins.ListAll(ctx)
 			for _, p := range ps {
 				if p.Service == nil && p.Route == nil {
 					plugins = append(plugins, p)

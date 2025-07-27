@@ -16,20 +16,20 @@ var (
 	_ list.Item = RouteItem{}
 )
 
-func (m *RootScreenModel) SwitchToRoutes() { //nolint:dupl
+func (m *RootScreenModel) SwitchToRoutes() {
 	m.name = "routes"
 
 	m.listFn = func(ctx context.Context) ([]list.Item, error) {
 		var (
 			routes []*kong.Route
 			err    error
-			c      = m.Client
+			client = m.Client
 		)
 
-		if *c.FilterService != "" {
-			routes, _, err = c.Routes.ListForService(ctx, c.FilterService, nil)
+		if *client.FilterService != "" {
+			routes, _, err = client.Routes.ListForService(ctx, client.FilterService, nil)
 		} else {
-			routes, err = c.Routes.ListAll(ctx)
+			routes, err = client.Routes.ListAll(ctx)
 		}
 
 		if err != nil {

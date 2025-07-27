@@ -16,7 +16,7 @@ var (
 	_ list.Item = ServiceItem{}
 )
 
-func (m *RootScreenModel) SwitchToServices() { //nolint:dupl
+func (m *RootScreenModel) SwitchToServices() {
 	m.name = "services"
 
 	m.listFn = func(ctx context.Context) ([]list.Item, error) {
@@ -30,6 +30,7 @@ func (m *RootScreenModel) SwitchToServices() { //nolint:dupl
 			si := ServiceItem{service}
 			items[i] = list.Item(si)
 		}
+
 		return items, nil
 	}
 
