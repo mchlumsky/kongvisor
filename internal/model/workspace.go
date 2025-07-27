@@ -16,18 +16,18 @@ var (
 	_ list.Item = WorkspaceItem{}
 )
 
-func (m *RootScreenModel) SwitchToWorkspaces() { //nolint:dupl
+func (m *RootScreenModel) SwitchToWorkspaces() {
 	m.name = "workspaces"
 
 	m.listFn = func(ctx context.Context) ([]list.Item, error) {
-		c := m.Client
+		client := m.Client
 
-		savedWks := c.Workspace()
+		savedWks := client.Workspace()
 
-		c.SetWorkspace("") // Can't list workspaces with a workspace set
-		defer c.SetWorkspace(savedWks)
+		client.SetWorkspace("") // Can't list workspaces with a workspace set
+		defer client.SetWorkspace(savedWks)
 
-		workspaces, err := c.Workspaces.ListAll(ctx)
+		workspaces, err := client.Workspaces.ListAll(ctx)
 		if err != nil {
 			return nil, err
 		}
