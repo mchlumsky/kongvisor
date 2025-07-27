@@ -1,26 +1,79 @@
 package model
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/goccy/go-yaml"
 	"github.com/kong/go-kong/kong"
 )
 
-var _ IDer = PluginItem{}
+var (
+	_ IDer      = PluginItem{}
+	_ list.Item = PluginItem{}
+)
 
 func (m *RootScreenModel) SwitchToPlugins() { //nolint:dupl
 	m.name = "plugins"
 
-	m.listFn = m.Client.ListPlugins
-	m.toItemFn = func(plugin any) list.Item {
-		return PluginItem(*plugin.(*kong.Plugin)) //nolint:forcetypeassert
+	m.listFn = func(ctx context.Context) ([]list.Item, error) {
+		var (
+			plugins []*kong.Plugin
+			err     error
+			c       = m.Client
+		)
+
+		switch {
+		case *c.FilterRoute != "":
+			plugins, err = c.Plugins.ListAllForRoute(ctx, c.FilterRoute)
+		case *c.FilterService != "":
+			plugins, err = c.Plugins.ListAllForService(ctx, c.FilterService)
+		default:
+			var ps []*kong.Plugin
+
+			ps, err = c.Plugins.ListAll(ctx)
+			for _, p := range ps {
+				if p.Service == nil && p.Route == nil {
+					plugins = append(plugins, p)
+				}
+			}
+		}
+
+		if err != nil {
+			return nil, err
+		}
+
+		res := make([]list.Item, len(plugins))
+		for i := range plugins {
+			res[i] = PluginItem{plugins[i]}
+		}
+
+		return res, nil
 	}
-	m.getFn = m.Client.GetPlugin
-	m.deleteFn = m.Client.DeletePlugin
-	m.updateFn = m.Client.UpdatePlugin
+
+	m.getFn = func(ctx context.Context, nameOrID string) (any, error) {
+		return m.Client.Plugins.Get(ctx, &nameOrID)
+	}
+
+	m.deleteFn = func(ctx context.Context, nameOrID string) error {
+		return m.Client.Plugins.Delete(ctx, &nameOrID)
+	}
+
+	m.updateFn = func(ctx context.Context, content []byte) error {
+		plugin := kong.Plugin{}
+
+		err := yaml.Unmarshal(content, &plugin)
+		if err != nil {
+			return err
+		}
+
+		_, err = m.Client.Plugins.Update(ctx, &plugin)
+
+		return err
+	}
 
 	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 0, 0)
 	m.list.Title = "Plugins"
@@ -36,7 +89,9 @@ func (m *RootScreenModel) SwitchToPlugins() { //nolint:dupl
 	}
 }
 
-type PluginItem kong.Plugin
+type PluginItem struct {
+	*kong.Plugin
+}
 
 func (pi PluginItem) FilterValue() string {
 	return joinStrPtrs(pi.Name, pi.ID) + joinStrPtrs(pi.Tags...)
@@ -47,14 +102,14 @@ func (pi PluginItem) Title() string {
 }
 
 func (pi PluginItem) Description() string {
-	return pluginDesc(kong.Plugin(pi))
+	return pluginDesc(pi.Plugin)
 }
 
 func (pi PluginItem) GetID() *string {
 	return pi.ID
 }
 
-func pluginDesc(plugin kong.Plugin) string {
+func pluginDesc(plugin *kong.Plugin) string {
 	tags := make([]string, len(plugin.Tags))
 	for i, t := range plugin.Tags {
 		tags[i] = *t
