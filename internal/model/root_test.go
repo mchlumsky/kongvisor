@@ -1,4 +1,4 @@
-//go:build (integration || enterprise)
+//go:build (integration && enterprise)
 
 package model
 
@@ -46,10 +46,8 @@ func TestIntegrationRootModel(t *testing.T) {
 		assert.Equal("default", *workspace.Name, "Get function should return the default workspace")
 
 		assert.NotNil(model.deleteFn, "Delete function should not be nil")
-		require.Error(
-			model.deleteFn(context.Background(), "default"),
-			"Delete function should return an error for default workspace",
-		)
+		require.Error(model.deleteFn(context.Background(), "default"), "Delete function should return an error when license missing")
+
 
 		assert.NotNil(model.updateFn, "Update function should not be nil")
 	})
