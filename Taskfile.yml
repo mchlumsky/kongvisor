@@ -217,15 +217,15 @@ tasks:
     cmds:
       - go test -cover -v -race $(go list ./...)
 
-  test-integration:
-    desc: Integration tests
+  test-integration-enterprise:
+    desc: Integration tests for enterprise edition
     env:
       CGO_ENABLED: 1  # required by the -race flag
-      TEST_KONG_VERSION: 3.9
+      TEST_KONG_VERSION: 3.11
     cmds:
-      - task: up:3.9
-      - go test -v -race -run TestIntegration -tags integration -coverprofile=coverage.txt ./...
-
+      - task: up:3.11
+      - go test -v -race -run TestIntegration -tags integration,enterprise -coverprofile=coverage.txt ./...
+      - task: down
 
   build:
     cmds:
