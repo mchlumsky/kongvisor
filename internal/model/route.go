@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	_ IDer      = RouteItem{}
-	_ list.Item = RouteItem{}
+	_ IDer             = RouteItem{}
+	_ list.DefaultItem = RouteItem{}
 )
 
 func (m *RootScreenModel) SwitchToRoutes() {
