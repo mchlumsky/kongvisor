@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	_ IDer      = WorkspaceItem{}
-	_ list.Item = WorkspaceItem{}
+	_ IDer             = WorkspaceItem{}
+	_ list.DefaultItem = WorkspaceItem{}
 )
 
 func (m *RootScreenModel) SwitchToWorkspaces() {
