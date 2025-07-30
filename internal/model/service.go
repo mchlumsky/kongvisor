@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	_ IDer      = ServiceItem{}
-	_ list.Item = ServiceItem{}
+	_ IDer             = ServiceItem{}
+	_ list.DefaultItem = ServiceItem{}
 )
 
 func (m *RootScreenModel) SwitchToServices() {

@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	_ IDer      = PluginItem{}
-	_ list.Item = PluginItem{}
+	_ IDer             = PluginItem{}
+	_ list.DefaultItem = PluginItem{}
 )
 
 func (m *RootScreenModel) SwitchToPlugins() {
