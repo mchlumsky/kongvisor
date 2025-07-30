@@ -20,6 +20,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           flags: unit
+
   integration-enterprise:
     strategy:
       matrix:
