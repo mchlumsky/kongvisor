@@ -1,26 +1,59 @@
 package model
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/goccy/go-yaml"
 	"github.com/kong/go-kong/kong"
 )
 
-var _ IDer = ServiceItem{}
+var (
+	_ IDer             = ServiceItem{}
+	_ list.DefaultItem = ServiceItem{}
+)
 
-func (m *RootScreenModel) SwitchToServices() { //nolint:dupl
+func (m *RootScreenModel) SwitchToServices() {
 	m.name = "services"
 
-	m.listFn = m.Client.ListServices
-	m.toItemFn = func(service any) list.Item {
-		return ServiceItem(*service.(*kong.Service)) //nolint:forcetypeassert
+	m.listFn = func(ctx context.Context) ([]list.Item, error) {
+		services, err := m.Client.Services.ListAll(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		items := make([]list.Item, len(services))
+		for i, service := range services {
+			si := ServiceItem{service}
+			items[i] = list.Item(si)
+		}
+
+		return items, nil
 	}
-	m.getFn = m.Client.GetService
-	m.deleteFn = m.Client.DeleteService
-	m.updateFn = m.Client.UpdateService
+
+	m.getFn = func(ctx context.Context, nameOrID string) (any, error) {
+		return m.Client.Services.Get(ctx, &nameOrID)
+	}
+
+	m.deleteFn = func(ctx context.Context, nameOrID string) error {
+		return m.Client.Services.Delete(ctx, &nameOrID)
+	}
+
+	m.updateFn = func(ctx context.Context, content []byte) error {
+		service := kong.Service{}
+
+		err := yaml.Unmarshal(content, &service)
+		if err != nil {
+			return err
+		}
+
+		_, err = m.Client.Services.Update(ctx, &service)
+
+		return err
+	}
 
 	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 0, 0)
 	m.list.Title = "Services"
@@ -36,7 +69,9 @@ func (m *RootScreenModel) SwitchToServices() { //nolint:dupl
 	}
 }
 
-type ServiceItem kong.Service
+type ServiceItem struct {
+	*kong.Service
+}
 
 func (si ServiceItem) FilterValue() string {
 	return joinStrPtrs(si.Name, si.ID, si.Path)

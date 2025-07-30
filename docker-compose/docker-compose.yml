@@ -135,8 +135,6 @@ services:
     depends_on:
       kong:
         condition: service_healthy
-#    entrypoint: deck gateway ping
-    # entrypoint: deck gateway dump -o /mnt/deck/kong.yaml
     entrypoint: deck gateway sync /mnt/deck/kong.yaml
     volumes:
       - ${PWD}/config/:/mnt/deck/
