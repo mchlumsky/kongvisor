@@ -1,26 +1,68 @@
 package model
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/goccy/go-yaml"
 	"github.com/kong/go-kong/kong"
 )
 
-var _ IDer = WorkspaceItem{}
+var (
+	_ IDer             = WorkspaceItem{}
+	_ list.DefaultItem = WorkspaceItem{}
+)
 
-func (m *RootScreenModel) SwitchToWorkspaces() { //nolint:dupl
+func (m *RootScreenModel) SwitchToWorkspaces() {
 	m.name = "workspaces"
 
-	m.listFn = m.Client.ListWorkspaces
-	m.toItemFn = func(workspace any) list.Item {
-		return WorkspaceItem(*workspace.(*kong.Workspace)) //nolint:forcetypeassert
+	m.listFn = func(ctx context.Context) ([]list.Item, error) {
+		client := m.Client
+
+		savedWks := client.Workspace()
+
+		client.SetWorkspace("") // Can't list workspaces with a workspace set
+		defer client.SetWorkspace(savedWks)
+
+		workspaces, err := client.Workspaces.ListAll(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		res := make([]list.Item, len(workspaces))
+		for i := range workspaces {
+			res[i] = WorkspaceItem{workspaces[i]}
+		}
+
+		return res, nil
 	}
-	m.getFn = m.Client.GetWorkspace
-	m.deleteFn = m.Client.DeleteWorkspace
-	m.updateFn = m.Client.UpdateWorkspace
+
+	m.getFn = func(ctx context.Context, nameOrID string) (any, error) {
+		return m.Client.Workspaces.Get(ctx, &nameOrID)
+	}
+
+	m.deleteFn = func(ctx context.Context, nameOrID string) error {
+		return m.Client.Workspaces.Delete(ctx, &nameOrID)
+	}
+
+	m.updateFn = func(ctx context.Context, content []byte) error {
+		workspace := kong.Workspace{}
+
+		err := yaml.Unmarshal(content, &workspace)
+		if err != nil {
+			return err
+		}
+
+		_, err = m.Client.Workspaces.Update(ctx, &workspace)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
 
 	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 0, 0)
 	m.list.Title = "Workspaces"
@@ -36,7 +78,9 @@ func (m *RootScreenModel) SwitchToWorkspaces() { //nolint:dupl
 	}
 }
 
-type WorkspaceItem kong.Workspace
+type WorkspaceItem struct {
+	*kong.Workspace
+}
 
 func (wi WorkspaceItem) FilterValue() string {
 	return joinStrPtrs(wi.Name, wi.ID, wi.Comment)
