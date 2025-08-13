@@ -337,33 +337,41 @@ func (m *RootScreenModel) title() string {
 	case workspaceName:
 		return "Workspaces"
 	case serviceName:
-		return "Workspace[" + m.Client.Workspace() + "] > Services"
+		if m.edition == EditionEnterprise {
+			return "Workspace[" + m.Client.Workspace() + "] > Services"
+		}
+
+		return "Services"
 	case routeName:
 		var sb strings.Builder
 
-		sb.WriteString("Workspace[" + m.Client.Workspace() + "]")
+		if m.edition == EditionEnterprise {
+			sb.WriteString("Workspace[" + m.Client.Workspace() + "] > ")
+		}
 
 		if m.FilterService == "" {
-			sb.WriteString(" > Routes")
+			sb.WriteString("Routes")
 		} else {
-			sb.WriteString(" > Service[" + m.FilterService + "] > Routes")
+			sb.WriteString("Service[" + m.FilterService + "] > Routes")
 		}
 
 		return sb.String()
 	case pluginName:
 		var sb strings.Builder
 
-		sb.WriteString("Workspace[" + m.Client.Workspace() + "]")
+		if m.edition == EditionEnterprise {
+			sb.WriteString("Workspace[" + m.Client.Workspace() + "] > ")
+		}
 
 		if m.FilterService != "" {
-			sb.WriteString(" > Service[" + m.FilterService + "]")
+			sb.WriteString("Service[" + m.FilterService + "] > ")
 		}
 
 		if m.FilterRoute != "" {
-			sb.WriteString(" > Route[" + m.FilterRoute + "]")
+			sb.WriteString("Route[" + m.FilterRoute + "] > ")
 		}
 
-		sb.WriteString(" > Plugins")
+		sb.WriteString("Plugins")
 
 		return sb.String()
 	}
