@@ -42,6 +42,7 @@ jobs:
         run: go test -v -race -run TestIntegration -tags integration,enterprise -coverprofile=coverage.txt ./...
         env:
           TEST_KONG_VERSION: ${{ matrix.kong_version }}
+          GOTOOLCHAIN: go1.25.0+auto
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
