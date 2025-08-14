@@ -47,7 +47,7 @@ func (suite *ServiceTestSuite) TestServices() {
 	items, err := suite.model.listFn(context.Background())
 	require.NoError(err, "List function should not return an error")
 	suite.Equal(2, len(items), "List function should return exactly 2 items")
-	suite.Equal(map[string]struct{}{"foo":{},"bar":{}}, extractServiceItemNames(items))
+	suite.Equal(map[string]struct{}{"foo": {}, "bar": {}}, extractServiceItemNames(items))
 
 	svc, err := suite.model.getFn(context.Background(), "foo")
 	require.NoError(err, "Get function should not return an error")
@@ -59,6 +59,8 @@ func (suite *ServiceTestSuite) TestServices() {
 	suite.Equal("foo-server.dev", *ksvc.Host, "Get function should return the correct service host")
 	suite.Equal(80, *ksvc.Port, "Get function should return the correct service port")
 	suite.Equal("http", *ksvc.Protocol, "Get function should return the correct service protocol")
+
+	require.Error(suite.model.deleteFn(context.Background(), ""), "Delete function should return an error for empty ID")
 }
 
 func TestIntegrationServiceTestSuite(t *testing.T) {

@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/kong/go-kong/kong"
 	"github.com/mchlumsky/kongvisor/internal/config"
 	"github.com/stretchr/testify/suite"
 )
@@ -62,6 +63,16 @@ func (suite *RouteTestSuite) TestRoutes() {
 		extractRouteItemNames(items),
 		"List function should return expected route names",
 	)
+
+	// get route by name
+	route, err := suite.model.getFn(context.Background(), "firstFoo")
+	require.NoError(err, "Get function should not return an error")
+
+	kroute := route.(*kong.Route)
+	suite.Equal("firstFoo", *kroute.Name, "Get function should return the correct route name")
+
+	// delete a route
+	require.Error(suite.model.deleteFn(context.Background(), ""), "Delete function should return an error for empty name")
 }
 
 func TestIntegrationRouteTestSuite(t *testing.T) {
@@ -80,4 +91,3 @@ func extractRouteItemNames(items []list.Item) map[string]struct{} {
 
 	return names
 }
-
