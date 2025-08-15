@@ -1,26 +1,72 @@
 package model
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/goccy/go-yaml"
 	"github.com/kong/go-kong/kong"
 )
 
-var _ IDer = RouteItem{}
+var (
+	_ IDer             = RouteItem{}
+	_ list.DefaultItem = RouteItem{}
+)
 
-func (m *RootScreenModel) SwitchToRoutes() { //nolint:dupl
+func (m *RootScreenModel) SwitchToRoutes() {
 	m.name = "routes"
 
-	m.listFn = m.Client.ListRoutes
-	m.toItemFn = func(route any) list.Item {
-		return RouteItem(*route.(*kong.Route)) //nolint:forcetypeassert
+	m.listFn = func(ctx context.Context) ([]list.Item, error) {
+		var (
+			routes []*kong.Route
+			err    error
+			client = m.Client
+		)
+
+		if *client.FilterService != "" {
+			routes, _, err = client.Routes.ListForService(ctx, client.FilterService, nil)
+		} else {
+			routes, err = client.Routes.ListAll(ctx)
+		}
+
+		if err != nil {
+			return nil, err
+		}
+
+		res := make([]list.Item, len(routes))
+		for i := range routes {
+			res[i] = RouteItem{routes[i]}
+		}
+
+		return res, nil
 	}
-	m.getFn = m.Client.GetRoute
-	m.deleteFn = m.Client.DeleteRoute
-	m.updateFn = m.Client.UpdateRoute
+
+	m.getFn = func(ctx context.Context, nameOrID string) (any, error) {
+		return m.Client.Routes.Get(ctx, &nameOrID)
+	}
+
+	m.deleteFn = func(ctx context.Context, nameOrID string) error {
+		return m.Client.Routes.Delete(ctx, &nameOrID)
+	}
+
+	m.updateFn = func(ctx context.Context, content []byte) error {
+		route := kong.Route{}
+
+		err := yaml.Unmarshal(content, &route)
+		if err != nil {
+			return err
+		}
+
+		_, err = m.Client.Routes.Update(ctx, &route)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
 
 	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 0, 0)
 	m.list.Title = "Routes"
@@ -36,7 +82,9 @@ func (m *RootScreenModel) SwitchToRoutes() { //nolint:dupl
 	}
 }
 
-type RouteItem kong.Route
+type RouteItem struct {
+	*kong.Route
+}
 
 func (ri RouteItem) FilterValue() string {
 	return joinStrPtrs(ri.Name, ri.ID) + joinStrPtrs(ri.Paths...)
@@ -47,14 +95,14 @@ func (ri RouteItem) Title() string {
 }
 
 func (ri RouteItem) Description() string {
-	return routeDesc(kong.Route(ri))
+	return routeDesc(ri.Route)
 }
 
 func (ri RouteItem) GetID() *string {
 	return ri.ID
 }
 
-func routeDesc(route kong.Route) string {
+func routeDesc(route *kong.Route) string {
 	protocols := make([]string, len(route.Protocols))
 	for i, p := range route.Protocols {
 		protocols[i] = *p

@@ -3,6 +3,7 @@
 <img src="assets/kongvisor.png" alt="kongvisor">
 
 [![Release](https://img.shields.io/github/release/mchlumsky/kongvisor.svg)](https://github.com/mchlumsky/kongvisor/releases/latest)
+[![codecov](https://codecov.io/gh/mchlumsky/kongvisor/graph/badge.svg?token=Nn2v1Xt2MU)](https://codecov.io/gh/mchlumsky/kongvisor)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE)
 [![Build status](https://img.shields.io/github/actions/workflow/status/mchlumsky/kongvisor/build.yml?branch=main)](https://github.com/mchlumsky/kongvisor/actions?workflow=build)
 [![Powered By: GoReleaser](https://img.shields.io/badge/powered%20by-goreleaser-green.svg)](https://github.com/goreleaser)
