@@ -12,6 +12,32 @@ KongVisor is a TUI for Kong Gateway Admin API.
 
 It supports managing Kong Gateway resources like Workspaces, Services, Routes, and Plugins in a terminal user interface.
 
+## Demo
+
+### Listing resources
+
+List resources (workspaces, services, routes, plugins). To see services in a workspace, scroll down to the workspace and press "s". To see routes in a service, scroll down to the service and press "r". To see plugins in a workspace, service or route, scroll down to the workspace, service or route and press "p".
+
+![Listing resources](assets/list.gif)
+
+### Viewing resources
+
+View resource details (in YAML of course!). Scroll down to the resource you want to see and press "y". Press esc to go back.
+
+![Viewing resources](assets/view.gif)
+
+### Deleting resources
+
+Delete resources (**without** confirmation). Scroll down to the resource you want to delete and press "Ctrl-d".
+
+![Deleting resources](assets/delete.gif)
+
+### Editing resources
+
+Edit resources (in your favorite editor defined by the `$EDITOR` environment variable). Scroll down to the resource you want to edit and press "e".
+
+![Editing resources](assets/edit.gif)
+
 ## Installation
 
 ### YUM/DNF repository (Fedora, CentOS, etc...)
