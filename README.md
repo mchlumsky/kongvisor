@@ -16,13 +16,13 @@ It supports managing Kong Gateway resources like Workspaces, Services, Routes, a
 
 ### Listing resources
 
-List resources (workspaces, services, routes, plugins):
+List resources (workspaces, services, routes, plugins). To see services in a workspace, scroll down to the workspace and press "s". To see routes in a service, scroll down to the service and press "r". To see plugins in a service or route, scroll down to the service or route and press "p".
 
 ![Listing resources](assets/list.gif)
 
 ### Viewing resources
 
-View resource details (in YAML of course!). Scroll down to the resource you want to see and press "y".
+View resource details (in YAML of course!). Scroll down to the resource you want to see and press "y". Press esc to go back.
 
 ![Viewing resources](assets/view.gif)
 
