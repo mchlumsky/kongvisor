@@ -32,6 +32,12 @@ Delete resources (**without** confirmation). Scroll down to the resource you wan
 
 ![Deleting resources](assets/delete.gif)
 
+### Editing resources
+
+Edit resources (in your favorite editor defined by the `$EDITOR` environment variable). Scroll down to the resource you want to edit and press "e".
+
+![Editing resources](assets/edit.gif)
+
 ## Installation
 
 ### YUM/DNF repository (Fedora, CentOS, etc...)
