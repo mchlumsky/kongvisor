@@ -22,9 +22,15 @@ List resources (workspaces, services, routes, plugins):
 
 ### Viewing resources
 
-View resource details (in YAML of course!):
+View resource details (in YAML of course!). Scroll down to the resource you want to see and press "y".
 
 ![Viewing resources](assets/view.gif)
+
+### Deleting resources
+
+Delete resources (**without** confirmation). Scroll down to the resource you want to delete and press "Ctrl-d".
+
+![Deleting resources](assets/delete.gif)
 
 ## Installation
 
