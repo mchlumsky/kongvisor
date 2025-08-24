@@ -56,6 +56,7 @@ func (m *RootScreenModel) SwitchToServices() {
 	}
 
 	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 0, 0)
+	m.list.SetFilteringEnabled(false)
 	m.list.Title = "Services"
 	m.list.SetStatusBarItemName("service", "services")
 
