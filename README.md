@@ -12,6 +12,20 @@ KongVisor is a TUI for Kong Gateway Admin API.
 
 It supports managing Kong Gateway resources like Workspaces, Services, Routes, and Plugins in a terminal user interface.
 
+## Demo
+
+### Listing resources
+
+List resources (workspaces, services, routes, plugins):
+
+![Listing resources](assets/list.gif)
+
+### Viewing resources
+
+View resource details (in YAML of course!):
+
+![Viewing resources](assets/view.gif)
+
 ## Installation
 
 ### YUM/DNF repository (Fedora, CentOS, etc...)

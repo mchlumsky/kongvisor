@@ -2,3 +2,4 @@
 task 3.44.1
 golangci-lint 2.4.0
 goreleaser 2.11.2
+vhs 0.10.0
