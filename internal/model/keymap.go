@@ -30,11 +30,19 @@ func NewPluginsBinding() key.Binding {
 	)
 }
 
+func NewYAMLViewBinding() key.Binding {
+	return key.NewBinding(
+		key.WithKeys("y"),
+		key.WithHelp("y", "yaml view"),
+	)
+}
+
 func NewWorkspaceKeyMap() []key.Binding {
 	return []key.Binding{
 		NewServicesBinding(),
 		NewRoutesBinding(),
 		NewPluginsBinding(),
+		NewYAMLViewBinding(),
 	}
 }
 
@@ -43,6 +51,7 @@ func NewServiceKeyMap() []key.Binding {
 		NewWorkspacesBinding(),
 		NewRoutesBinding(),
 		NewPluginsBinding(),
+		NewYAMLViewBinding(),
 	}
 }
 
@@ -51,6 +60,7 @@ func NewRouteKeyMap() []key.Binding {
 		NewWorkspacesBinding(),
 		NewServicesBinding(),
 		NewPluginsBinding(),
+		NewYAMLViewBinding(),
 	}
 }
 
@@ -59,5 +69,6 @@ func NewPluginKeyMap() []key.Binding {
 		NewWorkspacesBinding(),
 		NewServicesBinding(),
 		NewRoutesBinding(),
+		NewYAMLViewBinding(),
 	}
 }
