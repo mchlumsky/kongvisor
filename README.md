@@ -7,6 +7,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE)
 [![Build status](https://img.shields.io/github/actions/workflow/status/mchlumsky/kongvisor/build.yml?branch=main)](https://github.com/mchlumsky/kongvisor/actions?workflow=build)
 [![Powered By: GoReleaser](https://img.shields.io/badge/powered%20by-goreleaser-green.svg)](https://github.com/goreleaser)
+[![BuyMeACoffee](https://raw.githubusercontent.com/pachadotdev/buymeacoffee-badges/main/bmc-donate-yellow.svg)](https://www.buymeacoffee.com/martinchlumsky)
 
 KongVisor is a TUI for Kong Gateway Admin API.
 
