@@ -9,7 +9,7 @@
 [![Powered By: GoReleaser](https://img.shields.io/badge/powered%20by-goreleaser-green.svg)](https://github.com/goreleaser)
 [![BuyMeACoffee](https://raw.githubusercontent.com/pachadotdev/buymeacoffee-badges/main/bmc-donate-yellow.svg)](https://www.buymeacoffee.com/martinchlumsky)
 
-KongVisor is a TUI for Kong Gateway Admin API.
+KongVisor is a TUI for [Kong](https://konghq.com/) [Gateway Admin API](https://developer.konghq.com/api/gateway/admin-ee/3.11/).
 
 It supports managing Kong Gateway resources like Workspaces, Services, Routes, and Plugins in a terminal user interface.
 
