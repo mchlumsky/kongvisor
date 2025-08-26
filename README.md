@@ -13,6 +13,8 @@ KongVisor is a TUI for [Kong](https://konghq.com/) [Gateway Admin API](https://d
 
 It supports managing Kong Gateway resources like Workspaces, Services, Routes, and Plugins in a terminal user interface.
 
+KongVisor is tested with Kong Enterprise versions 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10 and 3.11 and Kong OSS versions 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8 and 3.9.
+
 ## Demo
 
 ### Listing resources
@@ -43,7 +45,7 @@ Edit resources (in your favorite editor defined by the `$EDITOR` environment var
 
 Let's say you have filtered the list of plugins by service and route like this:
 
-```Workspace[default] > Service[foo] > Route[firstFoo] > Plugins ```
+```Workspace[default] > Service[foo] > Route[firstFoo] > Plugins```
 
 If you want to see plugins applied to the service, then you can clear the route filtering by pressing capital `R` which will result in:
 
@@ -136,3 +138,47 @@ Run KongVisor with the name of the Kong Gateway you want to manage:
 ```bash
 kongvisor kong-gateway-1
 ```
+
+## Supported Kong entities matrix
+
+| Entity | Supported |
+|:--------------:|:---------------:|
+| Workspace | :white_check_mark: |
+| Service | :white_check_mark: |
+| Route | :white_check_mark: |
+| Plugin | :white_check_mark: |
+| ACL | :x: |
+| API-keys | :x: |
+| Admin | :x: |
+| Audit Logs | :x: |
+| Basic-auth credential | :x: |
+| CA Certificate | :x: |
+| Cache | :x: |
+| Certificate | :x: |
+| Clustering | :x: |
+| Consumer group | :x: |
+| Consumer | :x: |
+| CustomPlugin | :x: |
+| Debug | :x: |
+| Degraphql_route | :x: |
+| Event-hook | :x: |
+| Group | :x: |
+| HMAC-auth credential | :x: |
+| Information | :x: |
+| JWT | :x: |
+| KeySet | :x: |
+| Keyring | :x: |
+| Key | :x: |
+| License | :x: |
+| MTLS-auth credential | :x: |
+| OIDC JWK | :x: |
+| Partial Link | :x: |
+| Partial | :x: |
+| RBAC | :x: |
+| SNI | :x: |
+| Tag | :x: |
+| Vault | :x: |
+
+## TODO
+
+* Support recursive deletion of resources (e.g. delete service and all its routes and plugins)
