@@ -45,7 +45,7 @@ Edit resources (in your favorite editor defined by the `$EDITOR` environment var
 
 Let's say you have filtered the list of plugins by service and route like this:
 
-```Workspace[default] > Service[foo] > Route[firstFoo] > Plugins ```
+```Workspace[default] > Service[foo] > Route[firstFoo] > Plugins```
 
 If you want to see plugins applied to the service, then you can clear the route filtering by pressing capital `R` which will result in:
 
