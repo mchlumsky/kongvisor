@@ -138,3 +138,47 @@ Run KongVisor with the name of the Kong Gateway you want to manage:
 ```bash
 kongvisor kong-gateway-1
 ```
+
+## Supported Kong entities matrix
+
+| Entity | Supported |
+|:--------------:|:---------------:|
+| Workspace | :white_check_mark: |
+| Service | :white_check_mark: |
+| Route | :white_check_mark: |
+| Plugin | :white_check_mark: |
+| ACL | :x: |
+| API-keys | :x: |
+| Admin | :x: |
+| Audit Logs | :x: |
+| Basic-auth credential | :x: |
+| CA Certificate | :x: |
+| Cache | :x: |
+| Certificate | :x: |
+| Clustering | :x: |
+| Consumer group | :x: |
+| Consumer | :x: |
+| CustomPlugin | :x: |
+| Debug | :x: |
+| Degraphql_route | :x: |
+| Event-hook | :x: |
+| Group | :x: |
+| HMAC-auth credential | :x: |
+| Information | :x: |
+| JWT | :x: |
+| KeySet | :x: |
+| Keyring | :x: |
+| Key | :x: |
+| License | :x: |
+| MTLS-auth credential | :x: |
+| OIDC JWK | :x: |
+| Partial Link | :x: |
+| Partial | :x: |
+| RBAC | :x: |
+| SNI | :x: |
+| Tag | :x: |
+| Vault | :x: |
+
+## TODO
+
+* Support recursive deletion of resources (e.g. delete service and all its routes and plugins)
