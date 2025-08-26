@@ -13,6 +13,8 @@ KongVisor is a TUI for [Kong](https://konghq.com/) [Gateway Admin API](https://d
 
 It supports managing Kong Gateway resources like Workspaces, Services, Routes, and Plugins in a terminal user interface.
 
+KongVisor is tested with Kong Enterprise versions 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10 and 3.11 and Kong OSS versions 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8 and 3.9.
+
 ## Demo
 
 ### Listing resources
