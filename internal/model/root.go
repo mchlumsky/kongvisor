@@ -37,13 +37,6 @@ var (
 	loadingStatus = lipgloss.NewStyle().Blink(true).Faint(true).Render("loading...") //nolint:gochecknoglobals
 )
 
-type (
-	ListFn   func(context.Context) ([]list.Item, error)
-	GetFn    func(context.Context, string) (any, error)
-	DeleteFn func(context.Context, string) error
-	UpdateFn func(context.Context, []byte) error
-)
-
 type ItemsMsg struct {
 	Items []list.Item
 	Name  string
@@ -92,10 +85,10 @@ type RootScreenModel struct {
 	baseURL       string
 	kongVersion   string
 	edition       string
-	listFn        ListFn
-	getFn         GetFn
-	deleteFn      DeleteFn
-	updateFn      UpdateFn
+	listFn        func(context.Context) ([]list.Item, error)
+	getFn         func(context.Context, string) (any, error)
+	deleteFn      func(context.Context, string) error
+	updateFn      func(context.Context, []byte) error
 	name          string
 	status        string
 	FilterService string
