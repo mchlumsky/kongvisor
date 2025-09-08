@@ -69,7 +69,6 @@ func (m *RootScreenModel) SwitchToRoutes() {
 	}
 
 	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 0, 0)
-	m.list.SetFilteringEnabled(false)
 	m.list.Title = "Routes"
 	m.list.SetStatusBarItemName("route", "routes")
 
