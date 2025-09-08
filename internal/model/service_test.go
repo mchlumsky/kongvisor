@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/charmbracelet/bubbles/list"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/kong/go-kong/kong"
 	"github.com/mchlumsky/kongvisor/internal/config"
 	"github.com/stretchr/testify/suite"
@@ -61,6 +62,35 @@ func (suite *ServiceTestSuite) TestServices() {
 	suite.Equal("http", *ksvc.Protocol, "Get function should return the correct service protocol")
 
 	require.Error(suite.model.deleteFn(context.Background(), ""), "Delete function should return an error for empty ID")
+}
+
+func (suite *ServiceTestSuite) TestServiceFiltering() {
+	suite.model.SwitchToServices()
+
+	// switch to routes by pressing 'r'
+	k := tea.Key{Type: tea.KeyRunes, Runes: []rune{'r'}}
+	m, _ := suite.model.Update(tea.KeyMsg(k))
+	rm, _ := m.(*RootScreenModel)
+
+	suite.Equal("routes", rm.name, "Model should be in routes mode")
+
+	// reset to services
+	rm.SwitchToServices()
+	suite.Equal("services", rm.name, "Model should be in services mode")
+
+	// start filtering
+	k = tea.Key{Type: tea.KeyRunes, Runes: []rune{'/'}}
+	m, _ = rm.Update(tea.KeyMsg(k))
+	rm, _ = m.(*RootScreenModel)
+
+	suite.Equal(rm.list.FilterState(), list.Filtering, "Model should be in filtering state")
+
+	k = tea.Key{Type: tea.KeyRunes, Runes: []rune{'r'}}
+	// filter on letter "r" (this shouldn't switch to routes listing)
+	m, _ = rm.Update(tea.KeyMsg(k))
+	rm, _ = m.(*RootScreenModel)
+
+	suite.Equal("services", rm.name, "Model should be in services mode")
 }
 
 func TestIntegrationServiceTestSuite(t *testing.T) {

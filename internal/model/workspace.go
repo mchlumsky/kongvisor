@@ -65,7 +65,6 @@ func (m *RootScreenModel) SwitchToWorkspaces() {
 	}
 
 	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 0, 0)
-	m.list.SetFilteringEnabled(false)
 	m.list.Title = "Workspaces"
 	m.list.SetStatusBarItemName("workspace", "workspaces")
 
