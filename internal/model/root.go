@@ -16,7 +16,6 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/goccy/go-yaml"
 	"github.com/mchlumsky/kongvisor/internal/client"
 )
@@ -104,13 +103,15 @@ func (m *RootScreenModel) Init() tea.Cmd {
 
 func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: ireturn
 	if m.dump != nil {
-		spew.Fdump(m.dump, msg)
+		fmt.Fprintf(m.dump, "msg: %#v\n", msg)
 	}
-
-	var cmd tea.Cmd
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
+		if m.list.FilterState() == list.Filtering {
+			break
+		}
+
 		switch msg.String() {
 		case "ctrl+c":
 			return m, tea.Quit
@@ -212,7 +213,7 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 				return m, ErrCmd(ErrNilID)
 			}
 
-			cmd = func() tea.Msg {
+			cmd := func() tea.Msg {
 				ctx, cancel := context.WithTimeout(context.Background(), timeout)
 				defer cancel()
 
@@ -230,17 +231,24 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 				m.yaml = false
 			}
 
-			return m, cmd
+			return m, nil
 		case tea.KeyDown.String(), "j", tea.KeyUp.String(), "k":
+			var cmd tea.Cmd
+
 			m.list, cmd = m.list.Update(msg)
 
 			m.updateFilters()
+
+			return m, cmd
 		default:
+			var cmd tea.Cmd
 			if !m.yaml {
 				m.list, cmd = m.list.Update(msg)
 			} else {
 				m.viewport, cmd = m.viewport.Update(msg)
 			}
+
+			return m, cmd
 		}
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
@@ -278,18 +286,24 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 			return ItemsMsg{items, m.name}
 		}
 	case ItemsMsg:
+		var cmd tea.Cmd
+
 		if m.name == msg.Name {
-			m.list.SetItems(msg.Items)
+			cmd = m.list.SetItems(msg.Items)
 			m.updateFilters()
 			m.status = ""
 		}
 
-		return m, tickCmd()
+		return m, tea.Sequence(cmd, tickCmd())
 	case error:
 		m.err = msg
 
 		return m, nil
 	}
+
+	var cmd tea.Cmd
+
+	m.list, cmd = m.list.Update(msg)
 
 	return m, cmd
 }
