@@ -4,11 +4,11 @@ go 1.25.0
 
 require (
 	github.com/charmbracelet/bubbles v0.21.0
-	github.com/charmbracelet/bubbletea v1.3.9
+	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/goccy/go-yaml v1.18.0
-	github.com/kong/go-kong v0.67.0
+	github.com/kong/go-kong v0.68.0
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
 )
