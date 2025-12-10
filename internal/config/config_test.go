@@ -39,6 +39,7 @@ func TestNewConfig(t *testing.T) { //nolint:paralleltest
 	for _, tt := range tests { //nolint:paralleltest
 		t.Run(tt.name, func(t *testing.T) {
 			_ = os.WriteFile("config.yaml", tt.configContent, 0o600)
+
 			defer os.Remove("config.yaml")
 
 			got, err := config.NewConfig()
