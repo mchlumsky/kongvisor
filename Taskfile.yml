@@ -20,6 +20,13 @@ tasks:
       KONG_DOCKER_TAG: kong/kong-gateway:latest
       KONG_DATABASE: postgres
 
+  up:3.12:
+    desc: Run docker compose up with kong 3.12
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.12
+      KONG_DATABASE: postgres
+
   up:3.11:
     desc: Run docker compose up with kong 3.11
     <<: *up
@@ -233,9 +240,9 @@ tasks:
     desc: Integration tests for enterprise edition
     env:
       CGO_ENABLED: 1  # required by the -race flag
-      TEST_KONG_VERSION: 3.11
+      TEST_KONG_VERSION: 3.12
     cmds:
-      - task: up:3.11
+      - task: up:3.12
       - go test -v -race -run TestIntegration -tags integration,enterprise -coverprofile=coverage.txt ./...
       - task: down
 
