@@ -59,3 +59,13 @@ publishers:
     env:
       - FURY_TOKEN={{ .Env.FURY_TOKEN }}
     cmd: ./scripts/fury-upload.sh {{ .ArtifactName }}
+homebrew_casks:
+  - name: kongvisor
+    repository:
+      owner: mchlumsky
+      name: homebrew-kongvisor
+      branch: main
+    description: "TUI for Kong Gateway Admin API"
+    homepage: "https://github.com/mchlumsky/kongvisor"
+    binaries:
+      - kongvisor
