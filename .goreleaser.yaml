@@ -63,7 +63,7 @@ homebrew_casks:
   - name: kongvisor
     repository:
       owner: mchlumsky
-      name: homebrew-kongvisor
+      name: homebrew-tap
       branch: main
     description: "TUI for Kong Gateway Admin API"
     homepage: "https://github.com/mchlumsky/kongvisor"
