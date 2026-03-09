@@ -20,7 +20,7 @@ func (gc GatewayConfig) GetKongClient() (*kclient.Client, error) {
 	headers := http.Header{}
 	headers.Set("Kong-Admin-Token", gc.KongAdminToken)
 
-	client, err := kong.NewClient(kong.String(gc.URL), kong.HTTPClientWithHeaders(nil, headers))
+	client, err := kong.NewClient(new(gc.URL), kong.HTTPClientWithHeaders(nil, headers))
 	if err != nil {
 		return nil, fmt.Errorf("error creating kong client: %w", err)
 	}
