@@ -69,3 +69,5 @@ homebrew_casks:
     homepage: "https://github.com/mchlumsky/kongvisor"
     binaries:
       - kongvisor
+upx:
+  - enabled: true
