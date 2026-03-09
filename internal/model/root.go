@@ -52,7 +52,7 @@ func openEditor(filePath string) tea.Cmd {
 		editor = "vim"
 	}
 
-	c := exec.Command(editor, filePath) //nolint:noctx
+	c := exec.Command(editor, filePath) //nolint:noctx,gosec
 
 	return tea.ExecProcess(c, func(err error) tea.Msg {
 		return editorFinishedMsg{filePath, err}
