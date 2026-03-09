@@ -147,6 +147,7 @@ kongvisor kong-gateway-1
 | Service | :white_check_mark: |
 | Route | :white_check_mark: |
 | Plugin | :white_check_mark: |
+| Upstream | :x: |
 | ACL | :x: |
 | API-keys | :x: |
 | Admin | :x: |
