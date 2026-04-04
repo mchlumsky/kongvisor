@@ -137,7 +137,7 @@ services:
         condition: service_healthy
     entrypoint: deck gateway sync /mnt/deck/kong.yaml
     volumes:
-      - ${PWD}/config/:/mnt/deck/
+      - ${PWD}/docker-compose/config/:/mnt/deck/
     networks:
       - kong-net
 

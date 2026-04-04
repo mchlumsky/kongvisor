@@ -10,12 +10,11 @@ env: {}
 
 tasks:
   up: &up
-    dir: docker-compose
     preconditions:
-      - test -f docker-compose.yml
+      - test -f docker-compose/docker-compose.yml
     desc: Run docker compose up
     cmds:
-      - docker compose up -d
+      - docker compose -f docker-compose/docker-compose.yml up -d
     env:
       KONG_DOCKER_TAG: kong/kong-gateway:latest
       KONG_DATABASE: postgres
@@ -187,13 +186,12 @@ tasks:
   down:
     env:
       COMPOSE_PROFILES: database
-    dir: docker-compose
     preconditions:
-      - test -f docker-compose.yml
+      - test -f docker-compose/docker-compose.yml
     desc: Cleanup docker-compose
     cmds:
-      - docker compose kill
-      - docker compose rm -f
+      - docker compose -f docker-compose/docker-compose.yml kill
+      - docker compose -f docker-compose/docker-compose.yml rm -f
       - docker volume rm docker-compose_kong_prefix_vol docker-compose_kong_tmp_vol docker-compose_kong_data
 
   run:
