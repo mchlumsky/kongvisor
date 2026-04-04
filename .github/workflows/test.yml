@@ -24,7 +24,7 @@ jobs:
         run: go test -v -race -coverprofile=coverage.txt ./...
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           flags: unit
@@ -68,7 +68,7 @@ jobs:
           GOTOOLCHAIN: go1.25.1+auto
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           flags: integration
@@ -97,7 +97,7 @@ jobs:
           GOTOOLCHAIN: go1.26.1+auto
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           flags: integration
