@@ -57,10 +57,10 @@ jobs:
           KONG_DATABASE: postgres
 
       - name: Run tests
-        run: go test -v -race -run TestIntegration -tags integration,enterprise -coverprofile=coverage.txt ./...
+        run: go test -v -race -run TestIntegration -tags integration,enterprise ./...
         env:
           TEST_KONG_VERSION: ${{ matrix.kong_version }}
-          GOTOOLCHAIN: go1.25.1+auto
+          GOTOOLCHAIN: go1.26.1+auto
 
   integration-oss:
     strategy:
@@ -80,7 +80,7 @@ jobs:
           KONG_DATABASE: postgres
 
       - name: Run tests
-        run: go test -v -race -run TestIntegration -tags integration -coverprofile=coverage.txt ./...
+        run: go test -v -race -run TestIntegration -tags integration ./...
         env:
           TEST_KONG_VERSION: ${{ matrix.kong_version }}
           GOTOOLCHAIN: go1.26.1+auto
