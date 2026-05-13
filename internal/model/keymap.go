@@ -72,3 +72,9 @@ func NewPluginKeyMap() []key.Binding {
 		NewYAMLViewBinding(),
 	}
 }
+
+func NewRBACRoleKeyMap() []key.Binding {
+	return []key.Binding{
+		NewYAMLViewBinding(),
+	}
+}
