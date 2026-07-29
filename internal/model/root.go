@@ -160,6 +160,8 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 
 					err = m.deleteFn(ctx, *id)
 					if err != nil {
+						m.deletionConfirm = false
+						m.status = ""
 						return err
 					}
 
@@ -323,6 +325,7 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 		if m.name == msg.Name {
 			cmd = m.list.SetItems(msg.Items)
 			m.updateFilters()
+
 			if !m.deletionConfirm {
 				m.status = ""
 			}
