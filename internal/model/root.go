@@ -162,6 +162,7 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 					if err != nil {
 						m.deletionConfirm = false
 						m.status = ""
+
 						return err
 					}
 
@@ -254,7 +255,7 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 			}
 
 			m.deletionConfirm = true
-			m.status = "Are you sure? [y/n]"
+			m.status = "Are you sure you want to delete this? [y/n]"
 
 			return m, nil
 		case tea.KeyEsc.String():
