@@ -74,27 +74,28 @@ func ErrCmd(e error) tea.Cmd {
 }
 
 type RootScreenModel struct {
-	Client        *client.Client
-	dump          io.Writer
-	list          list.Model
-	help          help.Model
-	viewport      viewport.Model
-	viewportHelp  help.Model
-	yaml          bool
-	baseURL       string
-	kongVersion   string
-	edition       string
-	listFn        func(context.Context) ([]list.Item, error)
-	getFn         func(context.Context, string) (any, error)
-	deleteFn      func(context.Context, string) error
-	updateFn      func(context.Context, []byte) error
-	name          string
-	status        string
-	FilterService string
-	FilterRoute   string
-	width         int
-	height        int
-	err           error
+	Client          *client.Client
+	dump            io.Writer
+	list            list.Model
+	help            help.Model
+	viewport        viewport.Model
+	viewportHelp    help.Model
+	yaml            bool
+	baseURL         string
+	kongVersion     string
+	edition         string
+	listFn          func(context.Context) ([]list.Item, error)
+	getFn           func(context.Context, string) (any, error)
+	deleteFn        func(context.Context, string) error
+	updateFn        func(context.Context, []byte) error
+	name            string
+	status          string
+	FilterService   string
+	FilterRoute     string
+	deletionConfirm bool
+	width           int
+	height          int
+	err             error
 }
 
 func (m *RootScreenModel) Init() tea.Cmd {
@@ -143,6 +144,37 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 
 			return m, nil
 		case "y":
+			if m.deletionConfirm {
+				cmd := func() tea.Msg {
+					ctx, cancel := context.WithTimeout(context.Background(), timeout)
+					defer cancel()
+
+					id, err := m.SelectedID()
+					if err != nil {
+						return err
+					}
+
+					if id == nil {
+						return ErrNilID
+					}
+
+					err = m.deleteFn(ctx, *id)
+					if err != nil {
+						m.deletionConfirm = false
+						m.status = ""
+
+						return err
+					}
+
+					m.deletionConfirm = false
+					m.status = ""
+
+					return nil
+				}
+
+				return m, cmd
+			}
+
 			m.yaml = true
 
 			id, err := m.SelectedID()
@@ -172,6 +204,15 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 			}
 
 			m.viewport.SetContent(buf.String())
+		case "n":
+			if m.deletionConfirm {
+				m.deletionConfirm = false
+				m.status = ""
+
+				return m, nil
+			}
+
+			return m, nil
 		case "e":
 			temp, err := os.CreateTemp("", "kongvisor")
 			if err != nil {
@@ -213,23 +254,17 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 				return m, ErrCmd(ErrNilID)
 			}
 
-			cmd := func() tea.Msg {
-				ctx, cancel := context.WithTimeout(context.Background(), timeout)
-				defer cancel()
+			m.deletionConfirm = true
+			m.status = "Are you sure you want to delete this? [y/n]"
 
-				err := m.deleteFn(ctx, *id)
-				if err != nil {
-					return err
-				}
-
-				return nil
-			}
-
-			return m, cmd
+			return m, nil
 		case tea.KeyEsc.String():
 			if m.yaml {
 				m.yaml = false
 			}
+
+			m.deletionConfirm = false
+			m.status = ""
 
 			return m, nil
 		case tea.KeyDown.String(), "j", tea.KeyUp.String(), "k":
@@ -291,12 +326,18 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 		if m.name == msg.Name {
 			cmd = m.list.SetItems(msg.Items)
 			m.updateFilters()
-			m.status = ""
+
+			if !m.deletionConfirm {
+				m.status = ""
+			}
 		}
 
 		return m, tea.Sequence(cmd, tickCmd())
 	case error:
 		m.err = msg
+		if !m.deletionConfirm {
+			m.status = ""
+		}
 
 		return m, nil
 	}
@@ -398,6 +439,13 @@ func (m *RootScreenModel) View() string {
 		lipgloss.Left,
 		header,
 		fmt.Sprint("Last error: ", lipgloss.NewStyle().Bold(true).Render(lastError), "\n"),
+		func() string {
+			if m.deletionConfirm {
+				return lipgloss.NewStyle().Foreground(lipgloss.Color("2")).Bold(true).Render(m.status + "\n")
+			}
+
+			return ""
+		}(),
 		m.list.View(),
 	)
 }
