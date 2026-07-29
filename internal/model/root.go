@@ -323,12 +323,17 @@ func (m *RootScreenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) { //nolint: i
 		if m.name == msg.Name {
 			cmd = m.list.SetItems(msg.Items)
 			m.updateFilters()
-			m.status = ""
+			if !m.deletionConfirm {
+				m.status = ""
+			}
 		}
 
 		return m, tea.Sequence(cmd, tickCmd())
 	case error:
 		m.err = msg
+		if !m.deletionConfirm {
+			m.status = ""
+		}
 
 		return m, nil
 	}
