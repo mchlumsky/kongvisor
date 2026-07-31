@@ -424,7 +424,7 @@ func (m *RootScreenModel) View() string {
 		)
 	}
 
-	m.list.SetHeight(m.height - lipgloss.Height(header) - 2)
+	m.list.SetHeight(m.height - lipgloss.Height(header) - 3)
 	m.list.SetWidth(m.width)
 
 	var lastError string
@@ -441,7 +441,7 @@ func (m *RootScreenModel) View() string {
 		fmt.Sprint("Last error: ", lipgloss.NewStyle().Bold(true).Render(lastError), "\n"),
 		func() string {
 			if m.deletionConfirm {
-				return lipgloss.NewStyle().Foreground(lipgloss.Color("2")).Bold(true).Render(m.status + "\n")
+				return lipgloss.NewStyle().Foreground(lipgloss.Color("2")).Bold(true).Render(m.status)
 			}
 
 			return ""
