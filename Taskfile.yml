@@ -19,6 +19,20 @@ tasks:
       KONG_DOCKER_TAG: kong/kong-gateway:latest
       KONG_DATABASE: postgres
 
+  up:3.15:
+    desc: Run docker compose up with kong 3.15
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.15
+      KONG_DATABASE: postgres
+
+  up:3.14:
+    desc: Run docker compose up with kong 3.14
+    <<: *up
+    env:
+      KONG_DOCKER_TAG: kong/kong-gateway:3.14
+      KONG_DATABASE: postgres
+
   up:3.13:
     desc: Run docker compose up with kong 3.13
     <<: *up
